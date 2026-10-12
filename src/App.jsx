@@ -1,4 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { sound } from './lib/audio';
+import SoundToggle from './components/SoundToggle';
 import Preloader from './components/Preloader';
 import Cursor from './components/Cursor';
 import Navbar from './components/Navbar';
@@ -14,6 +16,20 @@ export default function App() {
   const [loaded, setLoaded] = useState(false); // flips to true when the preloader hands off
   const [workOpen, setWorkOpen] = useState(false); // a Work project panel is open
 
+  // transition sound: the moment loading hits 100% and the hero animation pops in
+  useEffect(() => { if (loaded) sound.play('transition'); }, [loaded]);
+
+  // projects.mp3 while the Work section is on screen or a project panel is open; main.mp3 everywhere else
+  const [workVisible, setWorkVisible] = useState(false);
+  useEffect(() => {
+    const el = document.getElementById('work');
+    if (!el || !('IntersectionObserver' in window)) return undefined;
+    const io = new IntersectionObserver(([e]) => setWorkVisible(e.intersectionRatio > 0.3), { threshold: [0, 0.3, 0.6, 1] });
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+  useEffect(() => { sound.setZone(workVisible || workOpen ? 'projects' : 'main'); }, [workVisible, workOpen]);
+
   return (
     <div className={loaded ? 'app loaded' : 'app'}>
       <a className="skip" href="#hero">Skip to content</a>
@@ -27,6 +43,7 @@ export default function App() {
       <Cursor />
       <Preloader onExit={() => setLoaded(true)} />
       <Navbar />
+      <SoundToggle show={loaded} />
       <AssistantFab show={loaded && !workOpen} />   {/* assistant button on every page */}
 
       <main>
