@@ -1,0 +1,71 @@
+/* Uses the 5 variables from src/styles/tokens.css:
+   --bg --surface --text --muted --accent
+   Also expects --font-heading and --font-body (Pixelify Sans + DM Sans). */
+.about {
+  --line: rgba(250, 250, 250, 0.14);
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  padding: clamp(56px, 9vw, 120px) clamp(16px, 4vw, 65px);
+}
+.about-frame {
+  max-width: 1310px;
+  margin: 0 auto;
+  border: 1px solid var(--line);
+  border-top-color: transparent;
+  border-bottom-color: transparent;
+}
+.about-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  min-height: 640px;
+}
+.about-me { padding: clamp(28px, 5vw, 64px); border-right: 1px solid var(--line); }
+.about-statement {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(2rem, 4.2vw, 3.4rem);
+  line-height: 1.1;
+  letter-spacing: -0.01em;
+  margin: 0 0 clamp(20px, 3vw, 36px);
+  text-wrap: balance;
+}
+.about-word { display: inline-block; }
+.about-text { color: var(--muted); font-size: 1.0625rem; line-height: 1.65; margin: 0 0 1.1rem; max-width: 52ch; }
+.about-big { font-family: var(--font-heading); font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--accent); margin: 2rem 0 0; }
+
+.about-side { display: flex; flex-direction: column; }
+.about-side h3 {
+  font-family: var(--font-heading);
+  font-weight: 400;
+  font-size: clamp(1.4rem, 2.2vw, 1.85rem);
+  margin: 0;
+  padding: clamp(24px, 3.5vw, 40px);
+}
+.about-tree { position: relative; flex: 1; min-height: 440px; }
+.about-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+.about-node {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 8px;
+  background: rgba(9, 9, 11, 0.78);
+  border: 1px solid var(--line);
+  font-size: 0.95rem;
+  white-space: nowrap;
+}
+.about-node i { width: 10px; height: 10px; background: var(--accent); display: block; }
+
+@media (max-width: 860px) {
+  .about-split { grid-template-columns: 1fr; min-height: 0; }
+  .about-me { border-right: 0; border-bottom: 1px solid var(--line); }
+  .about-tree { min-height: 400px; }
+}
+@media (max-width: 420px) {
+  .about { padding-inline: 0; }
+  .about-frame { border-left: 0; border-right: 0; }
+}
