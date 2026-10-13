@@ -13,7 +13,7 @@ An immersive, single-page developer portfolio with a real-time 3D hero, scroll-d
 [![Gemini](https://img.shields.io/badge/Google%20Gemini-2.5%20Flash-8E75B2?logo=googlegemini&logoColor=white)](https://ai.google.dev)
 [![Vercel](https://img.shields.io/badge/Deploy-Vercel-000000?logo=vercel&logoColor=white)](https://vercel.com)
 
-[**Live Demo**](#) · [**Report a Bug**](../../issues) · [**Connect on LinkedIn**](https://www.linkedin.com/in/manthan-ghodkhande/)
+[**Live Demo**](https://manthan-portfolio-phi.vercel.app/) · [**Report a Bug**](https://github.com/manthan707-ds/MANTHAN.portfolio/issues) · [**Connect on LinkedIn**](https://www.linkedin.com/in/manthan-ghodkhande/)
 
 </div>
 
@@ -155,6 +155,8 @@ Open the address Vite prints (usually `http://localhost:5173`).
 2. Import it at [vercel.com/new](https://vercel.com/new). Vite is detected automatically.
 3. Add `GEMINI_API_KEY` under **Project → Settings → Environment Variables**.
 4. Deploy. Vercel serves the `/api` folder as serverless functions.
+
+Live site: [manthan-portfolio-phi.vercel.app](https://manthan-portfolio-phi.vercel.app/)
 
 ## Customising
 
