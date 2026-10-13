@@ -21,13 +21,26 @@ An immersive, single-page developer portfolio with a real-time 3D hero, scroll-d
 
 ## Preview
 
-> Add screenshots or a short GIF here. Put the files in `docs/` (or `public/work/`) and link them, for example:
->
-> `![Hero](docs/hero.png)`
+<div align="center">
 
-| Hero (WebGL) | Tech Stack | Work | Contact + Assistant |
-|:---:|:---:|:---:|:---:|
-| _screenshot_ | _screenshot_ | _screenshot_ | _screenshot_ |
+![Portfolio demo](docs/demo.gif)
+
+</div>
+
+<table>
+  <tr>
+    <td align="center" width="50%"><b>Hero (WebGL)</b><br><img src="docs/hero.png" alt="Hero section with 3D WebGL scene" width="100%"></td>
+    <td align="center" width="50%"><b>About</b><br><img src="docs/about.png" alt="About section with pixel-art tree" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><b>Tech Stack</b><br><img src="docs/tech-stack.png" alt="Interactive tech stack carousel" width="100%"></td>
+    <td align="center" width="50%"><b>Work</b><br><img src="docs/work.png" alt="Project carousel with detail panel" width="100%"></td>
+  </tr>
+  <tr>
+    <td align="center" width="50%"><b>Contact</b><br><img src="docs/contact.png" alt="Contact section with canvas ring" width="100%"></td>
+    <td align="center" width="50%"><b>AI Assistant</b><br><img src="docs/assistant.png" alt="Gemini-powered chat assistant" width="100%"></td>
+  </tr>
+</table>
 
 ---
 
@@ -87,6 +100,7 @@ portfolio/
 │   ├── chat.js            # POST /api/chat → Gemini (rate limit, cleanup)
 │   ├── _knowledge.js      # Everything the assistant knows about me
 │   └── _lib.js            # Helpers for chat.js
+├── docs/                  # README screenshots and demo GIF
 ├── public/
 │   ├── audio/             # main.mp3, projects.mp3, transition.mp3
 │   └── work/              # Project screenshots
@@ -182,8 +196,9 @@ Live site: [manthan-portfolio-phi.vercel.app](https://manthan-portfolio-phi.verc
 
 ## Roadmap
 
+- [x] Add README screenshots and demo GIF
 - [ ] Connect the contact form (`api/contact.js`, then set `ENDPOINTS.contact` in `src/data/contact.js`)
-- [ ] Add real project screenshots and live-demo links
+- [ ] Add live-demo links for each project
 - [ ] Add favicon, Open Graph image and résumé PDF
 - [ ] Upgrade the assistant from prompt-based knowledge to full RAG with embeddings
 - [ ] Add a project case-study page for each project
