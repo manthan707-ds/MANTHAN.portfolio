@@ -1,7 +1,0 @@
-.afab { position: fixed; right: max(20px, env(safe-area-inset-right, 0px)); bottom: calc(20px + env(safe-area-inset-bottom, 0px)); z-index: 90; display: inline-flex; align-items: center; gap: .6rem; padding: .8rem 1.25rem .8rem 1rem; border-radius: 100px; border: 1px solid rgba(var(--accent-rgb), .5); background: rgba(var(--bg-rgb), .72); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); color: var(--text); font-family: var(--font-body); font-weight: 600; font-size: .82rem; letter-spacing: .14em; text-transform: uppercase; white-space: nowrap; animation: afab-in .6s var(--ease-out) both; transition: background .3s, border-color .3s, transform .3s var(--ease-out); }
-.afab svg { width: 18px; height: 18px; flex: none; color: var(--accent); }
-@media (hover: hover) { .afab:hover { background: rgba(var(--accent-rgb), .16); border-color: var(--accent); transform: translateY(-2px); } }
-.afab-layer { position: fixed; inset: 0; z-index: 200; }
-@keyframes afab-in { from { opacity: 0; transform: translateY(12px); } }
-@media (max-width: 600px) { .afab { padding: .85rem; } .afab span { display: none; } }
-@media (prefers-reduced-motion: reduce) { .afab { animation: none; } }
