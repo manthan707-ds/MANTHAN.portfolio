@@ -1,0 +1,58 @@
+/* ---------- 1. SEAMS: soft dissolve where two pages meet ---------- */
+[data-seam] { position: relative; }
+[data-seam]::before, [data-seam]::after {
+  content: ''; position: absolute; left: 0; right: 0; height: 24vh;
+  pointer-events: none; z-index: 30; will-change: opacity;
+}
+[data-seam]::before {            /* top edge of the page */
+  top: 0; opacity: var(--seam-t, 0);
+  background: linear-gradient(to bottom, var(--bg) 0%, rgba(var(--bg-rgb), .92) 18%, rgba(var(--bg-rgb), .7) 38%, rgba(var(--bg-rgb), .4) 60%, rgba(var(--bg-rgb), .15) 80%, rgba(var(--bg-rgb), 0) 100%);
+}
+[data-seam]::after {             /* bottom edge of the page */
+  bottom: 0; opacity: var(--seam-b, 0);
+  background: linear-gradient(to top, var(--bg) 0%, rgba(var(--bg-rgb), .92) 18%, rgba(var(--bg-rgb), .7) 38%, rgba(var(--bg-rgb), .4) 60%, rgba(var(--bg-rgb), .15) 80%, rgba(var(--bg-rgb), 0) 100%);
+}
+[data-seam="out"]::before {      /* About: also reaches UP into the hero so the 3D scene melts into it */
+  top: -24vh;
+  background: linear-gradient(to bottom, rgba(var(--bg-rgb), 0) 0%, rgba(var(--bg-rgb), .15) 20%, rgba(var(--bg-rgb), .4) 40%, rgba(var(--bg-rgb), .7) 62%, rgba(var(--bg-rgb), .92) 82%, var(--bg) 100%);
+}
+
+/* ---------- 2. AMBIENT: one atmosphere over every page ---------- */
+.one-ambient { position: fixed; inset: 0; z-index: 12; pointer-events: none; overflow: hidden; }
+.one-dots {
+  position: absolute; inset: 0; opacity: .5;
+  background-image: radial-gradient(rgba(var(--text-rgb), .07) 1px, transparent 1.2px);
+  background-size: 26px 26px;
+  -webkit-mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 100%);
+  mask-image: radial-gradient(ellipse 80% 70% at 50% 50%, #000 30%, transparent 100%);
+}
+.one-glow {
+  position: absolute; left: 0; top: 0; width: min(95vw, 900px); aspect-ratio: 1; border-radius: 50%;
+  background: radial-gradient(circle, rgba(var(--accent-rgb), .13) 0%, rgba(var(--accent-rgb), .05) 38%, transparent 68%);
+  mix-blend-mode: screen; will-change: transform;
+}
+
+/* ---------- 3. RAIL: progress line with one dot per page ---------- */
+.one-rail {
+  position: fixed; right: clamp(10px, 1.6vw, 24px); top: 50%; z-index: 90;
+  height: 34vh; min-height: 200px; width: 14px; transform: translateY(-50%);
+  transition: opacity .5s var(--ease-out, ease), visibility 0s;
+}
+.one-rail.is-hidden { opacity: 0; visibility: hidden; transition: opacity .3s, visibility 0s .3s; pointer-events: none; }
+.one-track { position: absolute; left: 50%; top: 0; bottom: 0; width: 1px; background: rgba(var(--text-rgb), .16); }
+.one-track i { position: absolute; inset: 0; background: var(--accent); box-shadow: 0 0 10px rgba(var(--accent-rgb), .7); transform-origin: top; transform: scaleY(0); }
+.one-dot {
+  position: absolute; left: 50%; width: 22px; height: 22px; margin: -11px 0 0 -11px; display: grid; place-items: center;
+  background: none; border: 0; cursor: pointer; padding: 0;
+}
+.one-dot::before { content: ''; width: 7px; height: 7px; background: var(--bg); border: 1px solid rgba(var(--text-rgb), .4); transition: transform .35s var(--ease-out, ease), background .3s, border-color .3s; }
+.one-dot.past::before { border-color: var(--accent); background: rgba(var(--accent-rgb), .5); }
+.one-dot.on::before { background: var(--accent); border-color: var(--accent); transform: scale(1.5); box-shadow: 0 0 12px rgba(var(--accent-rgb), .8); }
+.one-dot span {
+  position: absolute; right: 26px; top: 50%; transform: translate(6px, -50%); white-space: nowrap; opacity: 0; pointer-events: none;
+  font-family: 'Pixelify Sans', system-ui, sans-serif; font-size: .8rem; letter-spacing: .08em; color: var(--text);
+  background: rgba(var(--bg-rgb), .85); border: 1px solid rgba(var(--text-rgb), .12); padding: .25rem .6rem; transition: opacity .25s, transform .25s;
+}
+.one-dot:hover span, .one-dot:focus-visible span { opacity: 1; transform: translate(0, -50%); }
+@media (max-width: 700px) { .one-rail { right: 4px; } .one-dot span { display: none; } }
+@media (prefers-reduced-motion: reduce) { .one-glow { transform: translate(-50%, -50%) !important; left: 50%; top: 40%; } }

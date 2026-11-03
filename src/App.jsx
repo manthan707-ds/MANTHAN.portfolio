@@ -11,6 +11,7 @@ import TechStack from './sections/TechStack/TechStack';
 import Work from './sections/Work/Work';
 import ContactAssistant from './sections/Contact/ContactAssistant';
 import AssistantFab from './components/AssistantFab';
+import OnePage from './components/OnePage';
 
 export default function App() {
   const [loaded, setLoaded] = useState(false); // flips to true when the preloader hands off
@@ -44,6 +45,7 @@ export default function App() {
       <Preloader onExit={() => setLoaded(true)} />
       <Navbar />
       <SoundToggle show={loaded} />
+      <OnePage hidden={!loaded || workOpen} />   {/* makes the whole site feel like one continuous page */}
       <AssistantFab show={loaded && !workOpen} />   {/* assistant button on every page */}
 
       <main>
