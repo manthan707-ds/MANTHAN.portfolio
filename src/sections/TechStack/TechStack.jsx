@@ -1871,6 +1871,70 @@ const CSS = `
   .ts-card__body { animation: none; transition: none; }
 }
 
+
+/* ==========================================================================
+   DARK MATCH: makes Tech Stack as dark as About / Work / Contact.
+   Part A dims the glows in the main view. Part B turns the light group panel dark.
+   To go back to the old look, delete this whole block (or just Part A or Part B).
+   ========================================================================== */
+
+/* ---- Part A: main view (much dimmer glows, same layout) ---- */
+.ts-glow {
+  background:
+    radial-gradient(55% 42% at 50% 40%, color-mix(in srgb, var(--accent, #d8b4fd) 4%, transparent), transparent 72%),
+    radial-gradient(85% 38% at 50% 100%, color-mix(in srgb, var(--accent, #d8b4fd) 2.5%, transparent), transparent 72%);
+}
+.ts-nebula {
+  background:
+    radial-gradient(38% 30% at 16% 26%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 70%),
+    radial-gradient(34% 28% at 84% 72%, color-mix(in srgb, var(--accent) 3%, transparent), transparent 70%),
+    radial-gradient(26% 22% at 62% 14%, color-mix(in srgb, var(--text) 1%, transparent), transparent 70%);
+}
+.ts-gridfloor {
+  background-image:
+    linear-gradient(color-mix(in srgb, var(--accent) 5%, transparent) 1px, transparent 1px),
+    linear-gradient(90deg, color-mix(in srgb, var(--accent) 5%, transparent) 1px, transparent 1px);
+  opacity: .5;
+}
+.ts-ray { opacity: .05; }
+.ts-ray--c { opacity: .08; }
+.ts-ray--l2, .ts-ray--r2 { opacity: .03; }
+.ts-fx { opacity: .35; }
+.ts-grain { opacity: .02; }
+@keyframes ts-markin { from { opacity: 0; } to { opacity: .018; } }
+.ts-bgmark { opacity: .018; }
+.ts-floor {
+  border-color: color-mix(in srgb, var(--accent, #d8b4fd) 14%, transparent);
+  background: radial-gradient(ellipse at 50% 50%, color-mix(in srgb, var(--accent, #d8b4fd) 2%, transparent), transparent 68%);
+  box-shadow:
+    0 0 24px color-mix(in srgb, var(--accent, #d8b4fd) 4%, transparent),
+    inset 0 -34px 70px color-mix(in srgb, var(--accent, #d8b4fd) 2%, transparent);
+}
+.ts-card__face::before { background: radial-gradient(90% 62% at 85% 6%, color-mix(in srgb, var(--tint) 9%, transparent), transparent 62%); }
+.ts-card__face { box-shadow: inset 0 0 18px color-mix(in srgb, var(--tint) calc(1.5% + var(--on) * 3%), transparent), 0 22px 44px -22px rgba(0, 0, 0, .9); }
+.ts-card__halo { box-shadow: 0 0 10px color-mix(in srgb, var(--tint) 16%, transparent), 0 0 40px color-mix(in srgb, var(--tint) 8%, transparent); }
+.ts-card__glow {
+  background: linear-gradient(155deg, color-mix(in srgb, var(--tint) 42%, transparent) 0%, color-mix(in srgb, var(--tint) 9%, transparent) 38%, color-mix(in srgb, var(--tint) 30%, transparent) 100%);
+  opacity: calc(.5 + var(--on) * .3);
+}
+.ts-card__art { opacity: calc(.12 + var(--on) * .14); }
+.ts-card__shine { background: radial-gradient(circle at var(--gx) var(--gy), rgba(255, 255, 255, .04), transparent 42%); }
+.ts-card__sweep { background: linear-gradient(105deg, transparent 35%, rgba(255, 255, 255, .05) 50%, transparent 65%); }
+
+/* ---- Part B: group panel (was off-white, now dark like the rest) ---- */
+.ts-ov__bg { background: color-mix(in srgb, var(--bg) 88%, transparent); }
+.ts-panel { background: var(--surface); color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 10%, transparent); }
+.ts-panel :focus-visible { outline-color: var(--accent); }
+.ts-panel__x { background: color-mix(in srgb, var(--text) 8%, var(--surface)); color: var(--text); border: 1px solid color-mix(in srgb, var(--text) 16%, transparent); }
+.ts-panel__x:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+.ts-panel__k, .ts-panel__lb, .ts-trow__note { color: var(--muted); }
+.ts-pill2 { background: color-mix(in srgb, var(--text) 8%, transparent); border: 1px solid color-mix(in srgb, var(--text) 12%, transparent); }
+.ts-pill2--hot { background: color-mix(in srgb, var(--accent) 20%, transparent); border-color: color-mix(in srgb, var(--accent) 55%, transparent); color: var(--text); }
+.ts-trow { border-top-color: color-mix(in srgb, var(--text) 10%, transparent); }
+.ts-trow__logo { background: color-mix(in srgb, var(--text) 7%, transparent); color: var(--accent); }
+.ts-panel .ts-meter i { background: color-mix(in srgb, var(--text) 16%, transparent); }
+.ts-panel .ts-meter i.on { background: var(--accent); box-shadow: 0 0 8px color-mix(in srgb, var(--accent) 50%, transparent); }
+
 `
 
 /* ---------- SECTION ---------- */
