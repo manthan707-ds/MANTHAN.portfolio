@@ -139,7 +139,7 @@ export default function Work({ contactHref = `mailto:${PROFILE.email}`, onModalC
       const c = list()
       if (!c.length) return
       if (isMobile()) {
-        if (s.mob !== true) c.forEach((e) => { e.style.transform = ''; e.style.opacity = ''; e.style.zIndex = ''; e.style.filter = '' })
+        if (s.mob !== true) c.forEach((e) => { e.style.transform = ''; e.style.opacity = ''; e.style.zIndex = ''; e.style.filter = ''; e.style.visibility = '' })
         s.mob = true
         return
       }
@@ -159,11 +159,18 @@ export default function Work({ contactHref = `mailto:${PROFILE.email}`, onModalC
         let dd = hi < 0 ? 0 : (((i - hi) % N) + N) % N
         if (dd > N / 2) dd -= N
         if (e === h.el) h.d = d
+        const en = ent(a)
+        const op = clamp((3.8 - a) * 0.9, 0, 1) * en
+        // fully invisible card: hide it and skip all its layout work
+        if (op < 0.01) {
+          if (e.style.visibility !== 'hidden') { e.style.visibility = 'hidden'; e.style.opacity = '0' }
+          return
+        }
+        if (e.style.visibility === 'hidden') e.style.visibility = ''
         const th = clamp((d * step) / R, -1.4, 1.4)
         const ph = t * 0.0016 + d * 0.95
         const x = R * Math.sin(th) + (dd ? Math.sign(dd) * (Math.abs(dd) === 1 ? 60 : 24) * h.fan : 0) // neighbours fan out
         const z = -R * (1 - Math.cos(th)) + Math.sin(t * 0.0013 + d * 0.8) * 26 * w
-        const en = ent(a)
         const y = (1 - en) * 90 - lag * 55 * Math.sin(d * 0.85 - lag * 0.6) + (Math.sin(ph) * 15 + Math.sin(t * 0.0009 - d * 1.7) * 8) * w
         const tiltY = e === h.el ? h.tx : 0
         const tiltX = e === h.el ? h.ty : 0
@@ -171,8 +178,7 @@ export default function Work({ contactHref = `mailto:${PROFILE.email}`, onModalC
           `translate(-50%,-50%) translate3d(${x}px,${y}px,${z}px) rotateY(${th * 57.3}deg) ` +
           `rotateX(${Math.cos(ph) * 2.2 * w}deg) rotateZ(${-lag * 2.2 * Math.cos(d * 0.8) + Math.cos(ph) * 1.6 * w}deg) ` +
           `rotateY(${tiltY}deg) rotateX(${tiltX}deg)`
-        e.style.opacity = clamp((3.8 - a) * 0.9, 0, 1) * en
-        e.style.filter = a > 1.2 ? `blur(${clamp((a - 1.2) * 1.3, 0, 4).toFixed(1)}px)` : ''
+        e.style.opacity = op
         e.style.zIndex = 100 - Math.round(a * 10)
         e.classList.toggle('is-ctr', a < 0.35)
       })
@@ -456,7 +462,6 @@ export default function Work({ contactHref = `mailto:${PROFILE.email}`, onModalC
   return (
     <section ref={root} id="work" className="work" data-mode={mode} aria-label="Selected work">
       <div className="w-hero" ref={hero}>
-        <div className="w-grain" aria-hidden="true" />
         <div className="w-vig" aria-hidden="true" />
         <div className="w-bar w-bar--top">
           <a className="w-label" href="#">{PROFILE.name}</a>
