@@ -22,50 +22,204 @@ const GH = PROFILE.github
           (leave out or leave a slot empty to keep the gradient placeholder)
   look    0-3: which gradient layout the card uses (all colours come from --accent)
 */
+// Extra fields (accent, metrics, problem, approach, does, role, highlight, who, challenge, learned,
+// decisions, tryText, samples, note) are used by public/work-preview/index.html. Work.jsx ignores them for now.
 export const PROJECTS = [
   {
-    id: 'rag-ai-assistant',
-    title: 'RAG-Based AI Assistant',
-    desc: 'Building an AI assistant that combines information retrieval with Large Language Models to generate context-aware responses.',
-    cat: ['Artificial Intelligence', 'Generative AI'],
-    tech: ['Python', 'LLMs', 'RAG', 'Embeddings', 'AI APIs'],
-    status: 'In Progress',
-    links: [['GitHub', GH], ['Live Demo', '#']],
-    media: ['Chat interface', 'Retrieval workflow', 'Architecture diagram'],
-    look: 0,
+    "id": "rag-based-assistant",
+    "title": "RAG Based Assistant",
+    "desc": "Lecture Seek: ask a question about the course and get the exact video and timestamp where it is answered.",
+    "cat": [
+      "Artificial Intelligence",
+      "Generative AI"
+    ],
+    "tech": [
+      "Python",
+      "LLMs",
+      "RAG",
+      "Embeddings",
+      "AI APIs"
+    ],
+    "status": "Live",
+    "links": [
+      [
+        "Live Demo",
+        "https://rag-based-assistant-psi.vercel.app"
+      ],
+      ["GitHub", "https://github.com/manthan707-ds/RAG-Based-Assistant-"]
+    ],
+    "media": [
+      "Lecture Seek: chat with timestamps"
+    ],
+    "look": 0,
+    "accent": "#C6FF3D",
+    "problem": "Finding the exact moment in a long course video takes forever.",
+    "approach": "Retrieval over lecture topics and timestamps, so every answer points to a video and a time instead of a guess.",
+    "does": [
+      "Answers course questions with the video and start time",
+      "Google sign-in keeps your questions",
+      "Add lectures and uploads to make them searchable"
+    ],
+    "metrics": [
+      [
+        "4",
+        "lectures in the demo"
+      ],
+      [
+        "V2 · 0:00",
+        "sample answer"
+      ]
+    ],
+    "role": "Designed, built and deployed end to end",
+    "highlight": "Timestamps, not guesses.",
+    "who": "Students who want the exact lecture moment, fast.",
+    "challenge": "Keeping every answer tied to a real video and time, instead of a general reply.",
+    "learned": "Good retrieval matters more than a bigger model when answers have to be checkable.",
+    "decisions": [
+      "Retrieve from lecture topics and timestamps before answering",
+      "Link every answer to a video and a start time",
+      "Let users add their own lectures and uploads"
+    ],
+    "tryText": "Ask one of these in the live demo:",
+    "samples": [
+      "What is the box model?",
+      "How do I add a link?",
+      "What is a function?"
+    ],
+    "note": "Preview: uploaded files stay in your browser.",
+    "images": [
+      "/work/rag-based-assistant.webp"
+    ]
   },
   {
-    id: 'house-price-prediction',
-    title: 'House Price Prediction',
-    desc: 'A Machine Learning application that estimates house prices from property features using a trained regression model.',
-    cat: ['Machine Learning', 'Predictive Analytics'],
-    tech: ['Python', 'Pandas', 'Scikit-learn', 'Ridge Regression', 'Streamlit'],
-    status: 'Built',
-    links: [['GitHub', GH], ['Live Demo', '#']],
-    media: ['Prediction interface', 'Sample output', 'Model evaluation'],
-    look: 1,
+    "id": "judicial-triage",
+    "title": "JudicialTriage",
+    "desc": "A case prioritisation platform that turns judicial pendency data into an overview, case queue and analytics to support informed triage.",
+    "cat": [
+      "Machine Learning",
+      "Data for Social Impact"
+    ],
+    "tech": [
+      "Python",
+      "Pandas",
+      "Scikit-learn"
+    ],
+    "status": "Live",
+    "links": [
+      [
+        "Live Demo",
+        "https://judicial-triage.vercel.app"
+      ],
+      ["GitHub", "https://github.com/manthan707-ds/Judicial-Triage"]
+    ],
+    "media": [
+      "Overview dashboard"
+    ],
+    "look": 2,
+    "accent": "#FF9933",
+    "problem": "Pending cases pile up, and it is hard to see which matters need attention first.",
+    "approach": "One workspace that turns pendency data into an overview, a case queue and analytics, with human oversight kept in the loop.",
+    "does": [
+      "Overview of pending, priority and undertrial matters",
+      "Case queue and analytics views",
+      "Alerts for matters that need immediate review"
+    ],
+    "metrics": [
+      [
+        "42,581",
+        "pending matters"
+      ],
+      [
+        "8,294",
+        "priority cases"
+      ],
+      [
+        "1,248",
+        "immediate review"
+      ]
+    ],
+    "role": "Designed, built and deployed end to end",
+    "highlight": "Human oversight stays in the loop.",
+    "who": "Court administrators prioritising pending matters.",
+    "challenge": "Showing a lot of case data without burying the matters that need attention first.",
+    "learned": "A clear overview and a few strong signals beat a wall of numbers.",
+    "decisions": [
+      "Lead with an overview of pending, priority and undertrial matters",
+      "Keep the case queue and analytics as separate views",
+      "Flag matters for immediate review, with human oversight on every recommendation"
+    ],
+    "tryText": "Explore these areas in the live demo:",
+    "samples": [
+      "Overview",
+      "Case Queue",
+      "Analytics",
+      "Alerts"
+    ],
+    "note": "Human oversight remains required for all triage recommendations.",
+    "images": [
+      "/work/judicial-triage.webp"
+    ]
   },
   {
-    id: 'judiciary-case-complexity',
-    title: 'Judiciary Case Complexity Prediction',
-    desc: 'A collaborative ML project exploring court-case data to predict complexity and support data-driven case prioritization.',
-    cat: ['Machine Learning', 'Data for Social Impact'],
-    tech: ['Python', 'Pandas', 'Scikit-learn'],
-    status: 'Team Project',
-    links: [['GitHub', GH], ['Project Details', '#']],
-    media: ['Data workflow', 'Model results', 'System architecture'],
-    look: 2,
-  },
-  {
-    id: 'sales-data-analysis',
-    title: 'Sales Data Analysis',
-    desc: 'An exploratory data analysis project uncovering sales trends, product performance, and category-level insights from structured data.',
-    cat: ['Data Analytics', 'Data Visualization'],
-    tech: ['Python', 'Pandas', 'Matplotlib'],
-    status: 'Built / Improving',
-    links: [['GitHub', GH], ['Dashboard', '#']],
-    media: ['Sales charts', 'Category comparisons', 'Key findings'],
-    look: 3,
-  },
+    "id": "offercheck",
+    "title": "OfferCheck",
+    "desc": "Paste an internship or job message, or upload a screenshot. It flags risky phrases, shows the evidence behind each call and gives a risk score.",
+    "cat": [
+      "Artificial Intelligence",
+      "Trust & Safety"
+    ],
+    "tech": [
+      "RAG",
+      "AI APIs",
+      "Vercel"
+    ],
+    "status": "Live",
+    "links": [
+      [
+        "Live Demo",
+        "https://offercheck-rag-based.vercel.app"
+      ],
+      ["GitHub", "https://github.com/manthan707-ds/Offercheck-RAG-based"]
+    ],
+    "media": [
+      "Verdict and flagged phrases"
+    ],
+    "look": 1,
+    "accent": "#2DD4BF",
+    "problem": "Fake internship and job offers ask for money and look convincing.",
+    "approach": "Scans the message for risky phrases and shows the evidence behind every call, not just a score.",
+    "does": [
+      "Paste a message or upload a screenshot",
+      "Highlights risky phrases with numbered evidence",
+      "Gives a risk score, a verdict and what to do next"
+    ],
+    "metrics": [
+      [
+        "87",
+        "sample risk score"
+      ],
+      [
+        "4",
+        "signals flagged in the sample"
+      ]
+    ],
+    "role": "Designed, built and deployed end to end",
+    "highlight": "Shows the evidence behind every call.",
+    "who": "Students and job seekers checking internship or job messages.",
+    "challenge": "Explaining a risk score so people can trust it and check it themselves.",
+    "learned": "People act on a verdict when they can see exactly which phrases triggered it.",
+    "decisions": [
+      "Highlight the exact risky phrases with numbered evidence",
+      "Accept a pasted message or a screenshot upload",
+      "Give a plain-language next step with every verdict"
+    ],
+    "tryText": "Paste this into the live demo:",
+    "samples": [
+      "Congratulations! You are selected for the Data Science Internship. To activate your LMS access, pay dues of Rs 1,499 within 24 hours. Contact us on WhatsApp only."
+    ],
+    "note": "Avoid pasting passwords, OTPs or payment details.",
+    "images": [
+      "/work/offercheck.webp"
+    ]
+  }
 ]
-
