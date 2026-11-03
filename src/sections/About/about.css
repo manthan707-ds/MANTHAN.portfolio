@@ -1,6 +1,6 @@
-/* Uses the 5 variables from src/styles/tokens.css:
-   --bg --surface --text --muted --accent
-   Also expects --font-heading and --font-body (Pixelify Sans + DM Sans). */
+/* Uses the variables from src/styles/tokens.css:
+   --bg --surface --text --muted --accent  (+ --bg-rgb, --accent-rgb)
+   and --font-heading / --font-body (Pixelify Sans + DM Sans, scoped to .about). */
 .about {
   --line: rgba(250, 250, 250, 0.14);
   background: var(--bg);
@@ -9,63 +9,124 @@
   padding: clamp(56px, 9vw, 120px) clamp(16px, 4vw, 65px);
 }
 .about-frame {
-  max-width: 1310px;
+  max-width: 1400px;
   margin: 0 auto;
-  border: 1px solid var(--line);
-  border-top-color: transparent;
-  border-bottom-color: transparent;
-}
-.about-split {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  border-top: 1px solid var(--line);
-  border-bottom: 1px solid var(--line);
-  min-height: 640px;
+  grid-template-columns: 0.8fr 1.2fr;
+  border: 1px solid var(--line);
 }
-.about-me { padding: clamp(28px, 5vw, 64px); border-right: 1px solid var(--line); }
+.about-me { padding: clamp(24px, 4.5vw, 60px); border-right: 1px solid var(--line); min-width: 0; }
 .about-statement {
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: clamp(2rem, 4.2vw, 3.4rem);
   line-height: 1.1;
   letter-spacing: -0.01em;
-  margin: 0 0 clamp(20px, 3vw, 36px);
+  margin: 0 0 clamp(20px, 3vw, 32px);
   text-wrap: balance;
 }
 .about-word { display: inline-block; }
-.about-text { color: var(--muted); font-size: 1.0625rem; line-height: 1.65; margin: 0 0 1.1rem; max-width: 52ch; }
-.about-big { font-family: var(--font-heading); font-size: clamp(1.3rem, 2vw, 1.7rem); color: var(--accent); margin: 2rem 0 0; }
 
-.about-side { display: flex; flex-direction: column; }
+/* name / technically / strengths / moving towards */
+.about-facts { margin: 0 0 1.8rem; border-top: 1px solid var(--line); }
+.about-fact {
+  display: grid;
+  grid-template-columns: 128px 1fr;
+  gap: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid var(--line);
+}
+.about-fact dt { font-family: var(--font-heading); color: var(--accent); font-size: 1.05rem; line-height: 1.5; }
+.about-fact dd { margin: 0; color: var(--muted); line-height: 1.5; }
+.about-fact dd b { color: var(--text); font-weight: 500; }
+
+.about-closing {
+  font-family: var(--font-heading);
+  font-size: clamp(1.3rem, 2vw, 1.7rem);
+  line-height: 1.25;
+  text-wrap: balance;
+  margin: 0;
+}
+.about-caret {
+  display: inline-block; width: 0.5em; height: 1em; background: var(--accent);
+  margin-left: 8px; vertical-align: -0.12em; animation: about-caret 1s steps(1) infinite;
+}
+@keyframes about-caret { 50% { opacity: 0; } }
+
+/* availability badge + resume button */
+.about-cta { margin-top: 1.8rem; }
+.about-badge {
+  display: inline-flex; align-items: center; gap: 10px;
+  font-size: 0.95rem; padding: 6px 14px 6px 12px;
+  border: 1px solid var(--line); background: var(--surface);
+}
+.about-ping { width: 9px; height: 9px; background: #7cf2a8; position: relative; display: block; }
+.about-ping::after { content: ""; position: absolute; inset: 0; background: #7cf2a8; animation: about-ping 1.8s ease-out infinite; }
+@keyframes about-ping { from { transform: scale(1); opacity: 0.7; } to { transform: scale(2.6); opacity: 0; } }
+.about-buttons { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 1.3rem; }
+.about-btn {
+  font-family: var(--font-heading); font-size: 1.05rem; padding: 12px 22px;
+  border: 1px solid var(--accent); background: var(--accent); color: var(--bg);
+  display: inline-block; text-decoration: none; transition: background 0.25s, color 0.25s, border-color 0.25s;
+}
+.about-btn:hover { background: var(--text); border-color: var(--text); color: var(--bg); }
+
+/* tree side */
+.about-side { display: flex; flex-direction: column; min-width: 0; }
 .about-side h3 {
   font-family: var(--font-heading);
   font-weight: 400;
   font-size: clamp(1.4rem, 2.2vw, 1.85rem);
   margin: 0;
-  padding: clamp(24px, 3.5vw, 40px);
+  padding: clamp(22px, 3vw, 36px) clamp(22px, 3vw, 36px) 0;
 }
-.about-tree { position: relative; flex: 1; min-height: 440px; }
+.about-hint { color: var(--muted); font-size: 0.9rem; margin: 0; padding: 6px clamp(22px, 3vw, 36px) 0; }
+.about-tree { position: relative; height: clamp(440px, 52vw, 680px); margin-top: 6px; }
+.about-tree::before {
+  content: ""; position: absolute; left: 50%; top: 38%; width: 78%; aspect-ratio: 1;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, rgba(var(--accent-rgb), 0.24), rgba(124, 79, 214, 0.1) 45%, transparent 70%);
+  filter: blur(14px); animation: about-breathe 6s ease-in-out infinite alternate; pointer-events: none;
+}
+@keyframes about-breathe { from { opacity: 0.55; } to { opacity: 1; } }
 .about-canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
 .about-node {
-  position: absolute;
-  transform: translate(-50%, -50%);
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  padding: 3px 10px 3px 8px;
-  background: rgba(9, 9, 11, 0.78);
+  position: absolute; transform: translate(-50%, -50%);
+  display: flex; align-items: center; gap: 8px;
+  padding: 4px 11px 4px 9px;
+  background: rgba(var(--bg-rgb), 0.82);
   border: 1px solid var(--line);
-  font-size: 0.95rem;
-  white-space: nowrap;
+  color: var(--text); font: inherit; font-size: 1.05rem; white-space: nowrap; cursor: pointer;
+  transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
 }
-.about-node i { width: 10px; height: 10px; background: var(--accent); display: block; }
+.about-node i {
+  width: 10px; height: 10px; background: var(--accent); display: block;
+  animation: about-blink 2.2s ease-in-out infinite;
+}
+@keyframes about-blink { 50% { box-shadow: 0 0 12px 2px rgba(var(--accent-rgb), 0.85); } }
+.about-node:hover, .about-node[aria-pressed="true"] {
+  border-color: var(--accent); background: rgba(var(--accent-rgb), 0.18); box-shadow: 0 0 26px rgba(var(--accent-rgb), 0.45);
+}
+.about-node[aria-pressed="true"] i { background: #fff; }
+
+/* panel under the tree */
+.about-panel { border-top: 1px solid var(--line); padding: clamp(18px, 2.4vw, 28px) clamp(22px, 3vw, 36px); min-height: 150px; }
+.about-panel h4 { font-family: var(--font-heading); font-weight: 400; font-size: 1.25rem; color: var(--accent); margin: 0 0 8px; }
+.about-panel p { color: var(--muted); line-height: 1.55; max-width: 56ch; margin: 0; }
+.about-panel-in { animation: about-swap 0.45s cubic-bezier(0.16, 1, 0.3, 1); }
+@keyframes about-swap { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: none; } }
+.about-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+.about-pills span, .about-pills a { border: 1px solid var(--line); padding: 3px 10px; font-size: 0.9rem; color: var(--text); text-decoration: none; }
+.about-pills a:hover { border-color: var(--accent); color: var(--accent); }
 
 @media (max-width: 860px) {
-  .about-split { grid-template-columns: 1fr; min-height: 0; }
+  .about-frame { grid-template-columns: 1fr; }
   .about-me { border-right: 0; border-bottom: 1px solid var(--line); }
-  .about-tree { min-height: 400px; }
 }
 @media (max-width: 420px) {
-  .about { padding-inline: 0; }
-  .about-frame { border-left: 0; border-right: 0; }
+  .about-fact { grid-template-columns: 1fr; gap: 2px; }
+  .about-node { font-size: 0.85rem; padding: 3px 8px 3px 6px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .about *, .about *::before, .about *::after { animation: none !important; }
 }

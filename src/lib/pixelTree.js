@@ -1,6 +1,9 @@
-// Draws a pixel-grid tree on a <canvas>, with dotted links between labelled nodes.
-// Original generator (seeded, so it looks the same on every load).
-// The colours blend into your accent #D8B4FD. Change STOPS if you change the accent.
+// Interactive pixel-grid tree on a <canvas>.
+//  - grows with setProgress(0..1)
+//  - leaves scatter away from the cursor, some twinkle, a few drift down
+//  - setActive(i) lights up one branch (hub -> node) and the leaves around it
+// Seeded generator, so the tree shape is the same on every load.
+// Colours blend into the accent #D8B4FD. Change STOPS if you change the accent.
 const STOPS = ["#3b2470", "#7c4fd6", "#b98af0", "#D8B4FD", "#ffffff"];
 
 function rng(a) {
@@ -19,9 +22,12 @@ function ramp(t) {
   return "rgb(" + a.map((v, k) => Math.round(v + (b[k] - v) * f)).join(",") + ")";
 }
 
-export function createPixelTree(canvas, nodes = [], { cell = 7, seed = 7 } = {}) {
+export function createPixelTree(canvas, nodes = [], { cell = 8, seed = 7 } = {}) {
   const ctx = canvas.getContext("2d");
-  let cells = [], total = 1, W = 0, H = 0, progress = 1;
+  const host = canvas.parentElement;
+  const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let cells = [], leaves = [], total = 1, W = 0, H = 0;
+  let progress = 0, active = -1, mx = -9999, my = -9999, raf = 0;
 
   function build(cols, rows) {
     const r = rng(seed), map = new Map();
@@ -33,7 +39,7 @@ export function createPixelTree(canvas, nodes = [], { cell = 7, seed = 7 } = {})
         const k = gy * cols + gx;
         if (!map.has(k)) {
           const t = 0.3 + (depth / 6) * 0.55 + (r() - 0.5) * 0.3;
-          map.set(k, { gx, gy, order: order++, color: ramp(t) });
+          map.set(k, { gx, gy, order: order++, color: ramp(t), ox: 0, oy: 0, tw: Math.random() < 0.14, ph: Math.random() * 6.28 });
         }
       }
     };
@@ -57,16 +63,35 @@ export function createPixelTree(canvas, nodes = [], { cell = 7, seed = 7 } = {})
     total = Math.max(1, order);
   }
 
+  const points = () => nodes.map((n) => ({ x: (n.x / 100) * W, y: (n.y / 100) * H }));
+
   function render() {
+    const T = performance.now();
     ctx.clearRect(0, 0, W, H);
-    const limit = progress * total;
+    const limit = progress * total, P = points(), ap = active >= 0 ? P[active] : null, R = 70;
     for (const c of cells) {
       if (c.order > limit) break;
-      ctx.fillStyle = c.color;
-      ctx.fillRect(c.gx * cell, c.gy * cell, cell - 1, cell - 1);
+      const cx = c.gx * cell + 3, cy = c.gy * cell + 3;
+      if (!reduce) {
+        let tx = 0, ty = 0;
+        const dx = cx - mx, dy = cy - my, d = Math.sqrt(dx * dx + dy * dy);
+        if (d < R && d > 0.1) { let f = 1 - d / R; f *= f; tx = (dx / d) * f * 24; ty = (dy / d) * f * 24; }
+        c.ox += (tx - c.ox) * 0.16; c.oy += (ty - c.oy) * 0.16;
+      }
+      const hot = ap && Math.hypot(cx - ap.x, cy - ap.y) < 95;
+      const twinkle = !reduce && c.tw && Math.sin(T * 0.004 + c.ph) > 0.88;
+      ctx.fillStyle = hot || twinkle ? "#F6F3FB" : c.color;
+      ctx.fillRect(c.gx * cell + c.ox, c.gy * cell + c.oy, cell - 1, cell - 1);
+    }
+    if (progress >= 1 && !reduce) {
+      for (const p of leaves) {
+        p.y += p.vy; p.x += Math.sin(T * 0.001 + p.s) * 0.35;
+        if (p.y > H * 0.92) { p.y = H * (0.08 + Math.random() * 0.25); p.x = W * (0.28 + Math.random() * 0.44); }
+        ctx.globalAlpha = 0.85; ctx.fillStyle = p.c; ctx.fillRect(p.x, p.y, p.s, p.s);
+      }
+      ctx.globalAlpha = 1;
     }
     if (!nodes.length) return;
-    const pts = nodes.map((n) => ({ x: (n.x / 100) * W, y: (n.y / 100) * H }));
     const hub = { x: W * 0.5, y: H * 0.7 };
     ctx.save();
     ctx.globalAlpha = Math.min(1, progress * 1.6);
@@ -74,12 +99,20 @@ export function createPixelTree(canvas, nodes = [], { cell = 7, seed = 7 } = {})
     ctx.setLineDash([3, 4]);
     ctx.lineWidth = 1;
     ctx.beginPath();
-    pts.forEach((p, i) => {
+    P.forEach((p, i) => {
       ctx.moveTo(hub.x, hub.y); ctx.lineTo(p.x, p.y);
-      const q = pts[(i + 1) % pts.length];
+      const q = P[(i + 1) % P.length];
       ctx.moveTo(p.x, p.y); ctx.lineTo(q.x, q.y);
     });
     ctx.stroke();
+    ctx.setLineDash([]);
+    ctx.shadowColor = "#D8B4FD"; ctx.shadowBlur = 18 + 8 * Math.sin(T * 0.003);
+    ctx.fillStyle = "#D8B4FD"; ctx.fillRect(hub.x - 5, hub.y - 5, 10, 10);
+    ctx.shadowBlur = 0;
+    if (ap) {
+      ctx.strokeStyle = "#D8B4FD"; ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(hub.x, hub.y); ctx.lineTo(ap.x, ap.y); ctx.stroke();
+    }
     ctx.restore();
   }
 
@@ -89,15 +122,39 @@ export function createPixelTree(canvas, nodes = [], { cell = 7, seed = 7 } = {})
     canvas.width = W * dpr; canvas.height = H * dpr;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     build(Math.floor(W / cell), Math.floor(H / cell));
+    leaves = Array.from({ length: 20 }, () => ({
+      x: W * (0.28 + Math.random() * 0.44), y: H * (0.08 + Math.random() * 0.8),
+      vy: 0.25 + Math.random() * 0.4, s: 3 + Math.floor(Math.random() * 3),
+      c: Math.random() > 0.5 ? "#D8B4FD" : "#b98af0",
+    }));
     render();
   }
 
+  const onMove = (e) => { const r = canvas.getBoundingClientRect(); mx = e.clientX - r.left; my = e.clientY - r.top; };
+  const onLeave = () => { mx = my = -9999; };
+  host.addEventListener("pointermove", onMove);
+  host.addEventListener("pointerleave", onLeave);
+
+  const tick = () => { render(); raf = requestAnimationFrame(tick); };
   const ro = new ResizeObserver(resize);
   ro.observe(canvas);
   resize();
 
   return {
-    draw(p) { progress = p; render(); },
-    destroy() { ro.disconnect(); },
+    // 0..1, how much of the tree has grown
+    setProgress(p) { progress = p; if (reduce) render(); },
+    // index of the highlighted node, or -1
+    setActive(i) { active = i; if (reduce) render(); },
+    // run the animation loop only while the tree is on screen
+    setVisible(v) {
+      if (reduce) { render(); return; }
+      if (v && !raf) raf = requestAnimationFrame(tick);
+      else if (!v && raf) { cancelAnimationFrame(raf); raf = 0; }
+    },
+    destroy() {
+      cancelAnimationFrame(raf); raf = 0; ro.disconnect();
+      host.removeEventListener("pointermove", onMove);
+      host.removeEventListener("pointerleave", onLeave);
+    },
   };
 }
