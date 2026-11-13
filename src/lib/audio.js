@@ -10,7 +10,7 @@ const SRC = {
   projects: `${BASE}audio/projects.mp3`,
   transition: `${BASE}audio/transition.mp3`,
 };
-const VOL = { main: 0.35, projects: 0.4, transition: 0.7 }; // tweak loudness here
+const VOL = { main: 0.8, projects: 0.4, transition: 1 }; // tweak loudness here (0..1, browser max is 1)
 const FADE_MS = 1200;
 const KEY = 'portfolio-sound';
 
